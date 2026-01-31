@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products - Asterism Pharma</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .products-container {
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .filters-section {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #0066cc;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95rem;
+        }
+
+        .sort-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-toggle button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .view-toggle button.active {
+            background: #0066cc;
+            color: white;
+            border-color: #0066cc;
+        }
+
+        .breadcrumb {
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .product-count {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff6b35;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .product-image {
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            font-size: 0.8rem;
+            color: #0066cc;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-info h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .product-info p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .product-specs {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding-top: 0.5rem;
+        }
+
+        .price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        .stock-status {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .add-to-cart {
+            flex: 1;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 0.7rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .add-to-cart:hover {
+            background-color: #0052a3;
+        }
+
+        .wishlist-btn {
+            background: white;
+            border: 2px solid #ff6b35;
+            color: #ff6b35;
+            padding: 0.7rem 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .wishlist-btn:hover {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .pagination a,
+        .pagination span {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #0066cc;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination a:hover {
+            background: #0066cc;
+            color: white;
+        }
+
+        .pagination .active {
+            background: #0066cc;
+            color: white;
+            border-color: #0066cc;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .filters-section {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .product-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <nav>
+            <a href="main.html" class="logo">🏥 Asterism Pharma</a>
+            <ul class="nav-links">
+                <li><a href="main.html#home">Home</a></li>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="main.html#about">About Us</a></li>
+                <li><a href="main.html#contact">Contact</a></li>
+                <li><a href="main.html#faq">FAQ</a></li>
+            </ul>
+            <div class="nav-icons">
+                <a href="#search" title="Search">🔍</a>
+                <a href="#wishlist" title="Wishlist">❤️</a>
+                <a href="#cart" title="Shopping Cart">🛒</a>
+                <a href="#account" title="Account">👤</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb" style="padding: 1rem 5%; max-width: 1400px; margin: 0 auto;">
+        <a href="main.html">Home</a> / <span>All Products</span>
+    </div>
+
+    <!-- Products Container -->
+    <div class="products-container">
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label for="category">Category:</label>
+                <select id="category">
+                    <option value="">All Categories</option>
+                    <option value="supplements">Health Supplements</option>
+                    <option value="medicines">Medicines</option>
+                    <option value="syrups">Syrups</option>
+                    <option value="capsules">Capsules</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="price">Price Range:</label>
+                <select id="price">
+                    <option value="">All Prices</option>
+                    <option value="0-200">₹0 - ₹200</option>
+                    <option value="200-500">₹200 - ₹500</option>
+                    <option value="500-1000">₹500 - ₹1000</option>
+                    <option value="1000+">₹1000+</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="search">Search:</label>
+                <input type="text" id="search" placeholder="Search products...">
+            </div>
+        </div>
+
+        <!-- Sort & View -->
+        <div class="sort-section">
+            <div class="filter-group">
+                <label for="sort">Sort by:</label>
+                <select id="sort">
+                    <option value="popular">Most Popular</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="newest">Newest</option>
+                </select>
+            </div>
+            <div class="view-toggle">
+                <button class="active" title="Grid View">⊞</button>
+                <button title="List View">☰</button>
+            </div>
+        </div>
+
+        <!-- Product Header -->
+        <div class="product-header">
+            <h1 style="color: #0066cc; font-size: 2rem;">All Products</h1>
+            <span class="product-count">Showing 24 of 150 products</span>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid">
+            <!-- Health Supplements -->
+            <div class="product-card">
+                <div class="product-badge">New</div>
+                <div class="product-image">💊</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Astesol D3®MG</h3>
+                    <p>The Absolute Magnesium Solution</p>
+                    <div class="product-specs">
+                        <strong>60 capsules</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹279.04</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">💉</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>ONVIT LC</h3>
+                    <p>Advanced Mitochondrial Energizer & Antioxidant</p>
+                    <div class="product-specs">
+                        <strong>30 capsules</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹589.52</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-badge">Sale</div>
+                <div class="product-image">🩹</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>AstiumD3-UC</h3>
+                    <p>Ultimate Bone & Joint Care Formula</p>
+                    <div class="product-specs">
+                        <strong>30 tablets</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹647.61</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🧴</div>
+                <div class="product-info">
+                    <div class="product-category">Syrups</div>
+                    <h3>Coldnic Syrup</h3>
+                    <p>Phenylephrine & Chlorpheniramine (60ml)</p>
+                    <div class="product-specs">
+                        <strong>60ml bottle</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹149.99</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🌿</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Riglobin-XT</h3>
+                    <p>Iron, Folic Acid & Vitamin B12 Supplement</p>
+                    <div class="product-specs">
+                        <strong>30 tablets</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹249.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">💪</div>
+                <div class="product-info">
+                    <div class="product-category">Medicines</div>
+                    <h3>Claventin 625</h3>
+                    <p>Powerful Antibiotic with Probiotic Support</p>
+                    <div class="product-specs">
+                        <strong>10 tablets</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹399.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🧬</div>
+                <div class="product-info">
+                    <div class="product-category">Capsules</div>
+                    <h3>Onvit-4G Softgel</h3>
+                    <p>4-in-1 Formula for Energy, Immunity & Vitality</p>
+                    <div class="product-specs">
+                        <strong>30 softgels</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹499.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-badge">Best Seller</div>
+                <div class="product-image">🦴</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Astium-D3</h3>
+                    <p>Coral Calcium with Vitamin D₃ for Strong Bones</p>
+                    <div class="product-specs">
+                        <strong>30 tablets</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹329.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">💧</div>
+                <div class="product-info">
+                    <div class="product-category">Syrups</div>
+                    <h3>Astesol-D3 Syrup</h3>
+                    <p>Vitamin D₃ Oral Solution 60,000 IU</p>
+                    <div class="product-specs">
+                        <strong>60ml bottle</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹299.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">👶</div>
+                <div class="product-info">
+                    <div class="product-category">Syrups</div>
+                    <h3>Astesol-D3 Oral Drops</h3>
+                    <p>Vitamin D₃ 800 IU For Healthy Growth in Children</p>
+                    <div class="product-specs">
+                        <strong>30ml bottle</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹189.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🧠</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Onvit Syrup</h3>
+                    <p>L-Lysine & Inositol with Multivitamin & Multimineral</p>
+                    <div class="product-specs">
+                        <strong>200ml bottle</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹349.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">⭐</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Astesol-D 60K Chewable</h3>
+                    <p>High-Potency Vitamin D₃ for Bone Strength & Immunity</p>
+                    <div class="product-specs">
+                        <strong>30 tablets</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹379.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🩺</div>
+                <div class="product-info">
+                    <div class="product-category">Medicines</div>
+                    <h3>Amoxicillin 500mg</h3>
+                    <p>Broad Spectrum Antibiotic Capsule</p>
+                    <div class="product-specs">
+                        <strong>15 capsules</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹189.50</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🌡️</div>
+                <div class="product-info">
+                    <div class="product-category">Medicines</div>
+                    <h3>Ibuprofen 400mg</h3>
+                    <p>Effective Pain Relief & Anti-Inflammatory</p>
+                    <div class="product-specs">
+                        <strong>20 tablets</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹129.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">💚</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Spirulina 500mg</h3>
+                    <p>Natural Algae Supplement for Nutrition & Energy</p>
+                    <div class="product-specs">
+                        <strong>60 tablets</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹299.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🥗</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Multivitamin Complex</h3>
+                    <p>Complete Daily Vitamin & Mineral Support</p>
+                    <div class="product-specs">
+                        <strong>30 tablets</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹249.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🦷</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Calcium & Vitamin D3</h3>
+                    <p>Dental & Bone Health Support Formula</p>
+                    <div class="product-specs">
+                        <strong>30 tablets</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹279.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">👁️</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Lutein & Zeaxanthin</h3>
+                    <p>Advanced Eye Health & Vision Support</p>
+                    <div class="product-specs">
+                        <strong>30 capsules</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹459.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🫀</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Omega-3 Fish Oil</h3>
+                    <p>Heart Health & Cardiovascular Support</p>
+                    <div class="product-specs">
+                        <strong>30 softgels</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹529.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">💊</div>
+                <div class="product-info">
+                    <div class="product-category">Medicines</div>
+                    <h3>Paracetamol 500mg</h3>
+                    <p>Fever & Pain Relief Tablets</p>
+                    <div class="product-specs">
+                        <strong>15 tablets</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹89.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🧴</div>
+                <div class="product-info">
+                    <div class="product-category">Syrups</div>
+                    <h3>Cough & Cold Syrup</h3>
+                    <p>Effective Relief for Cough & Congestion</p>
+                    <div class="product-specs">
+                        <strong>100ml bottle</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹139.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🍯</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Honey & Ginger Mix</h3>
+                    <p>Natural Immune Booster & Cough Suppressant</p>
+                    <div class="product-specs">
+                        <strong>200ml bottle</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹179.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🌿</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Turmeric Curcumin</h3>
+                    <p>Natural Anti-Inflammatory & Antioxidant</p>
+                    <div class="product-specs">
+                        <strong>30 capsules</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹349.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">🧘</div>
+                <div class="product-info">
+                    <div class="product-category">Health Supplements</div>
+                    <h3>Ashwagandha Powder</h3>
+                    <p>Stress Relief & Mental Health Support</p>
+                    <div class="product-specs">
+                        <strong>100g powder</strong> | 9 months shelf life
+                    </div>
+                    <div class="price-section">
+                        <span class="price">₹299.00</span>
+                        <span class="stock-status">In Stock</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist-btn">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <span class="active">1</span>
+            <a href="#page2">2</a>
+            <a href="#page3">3</a>
+            <a href="#page4">4</a>
+            <a href="#page5">5</a>
+            <a href="#page2">Next »</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="https://facebook.com" title="Facebook">f</a>
+            <a href="https://twitter.com" title="Twitter">𝕏</a>
+            <a href="https://instagram.com" title="Instagram">📷</a>
+            <a href="https://linkedin.com" title="LinkedIn">in</a>
+            <a href="https://wa.me/919212093555" title="WhatsApp">💬</a>
+        </div>
+        <div class="footer-links">
+            <a href="main.html#about">About Us</a>
+            <a href="products.html">Shop</a>
+            <a href="main.html#contact">Contact Us</a>
+            <a href="#blog">Blog</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#shipping">Shipping & Delivery</a>
+            <a href="#returns">Returns & Cancellation</a>
+        </div>
+        <p>&copy; 2024 Asterism Pharmaceuticals. All Rights Reserved.</p>
+        <p style="font-size: 0.9rem; color: #999; margin-top: 1rem;">Developed with care for your health</p>
+    </footer>
+
+    <script>
+        // Product mapping
+        const productMap = {
+            'Astesol D3®MG': 'astesol-d3mg',
+            'ONVIT LC': 'onvit-lc',
+            'AstiumD3-UC': 'astiumd3-uc',
+            'Coldnic Syrup': 'coldnic-syrup',
+            'Riglobin-XT': 'riglobin-xt',
+            'Claventin 625': 'claventin-625',
+            'Onvit-4G Softgel': 'onvit-4g',
+            'Astium-D3': 'astium-d3'
+        };
+
+        // Make product cards clickable
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Don't navigate if clicking on action buttons
+                    if (e.target.classList.contains('add-to-cart') || e.target.classList.contains('wishlist-btn')) {
+                        return;
+                    }
+                    const productName = this.querySelector('h3').textContent;
+                    const productId = productMap[productName] || productName.toLowerCase().replace(/[\s®]/g, '-');
+                    window.location.href = `product-detail.html?id=${productId}`;
+                });
+                // Add pointer cursor
+                card.style.cursor = 'pointer';
+            });
+        });
+
+        // Add to Cart functionality
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent card click
+                const productName = this.closest('.product-info').querySelector('h3').textContent;
+                alert(`"${productName}" added to cart!`);
+            });
+        });
+
+        // Wishlist functionality
+        document.querySelectorAll('.wishlist-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent card click
+                this.style.background = this.style.background === 'rgb(255, 107, 53)' ? 'white' : '#ff6b35';
+                this.style.color = this.style.color === 'white' ? '#ff6b35' : 'white';
+            });
+        });
+
+        // Search functionality
+        document.getElementById('search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.product-card').forEach(card => {
+                const productName = card.querySelector('h3').textContent.toLowerCase();
+                const productDesc = card.querySelector('p').textContent.toLowerCase();
+                card.style.display = productName.includes(searchTerm) || productDesc.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Filter functionality
+        document.getElementById('category').addEventListener('change', function(e) {
+            const category = e.target.value.toLowerCase();
+            document.querySelectorAll('.product-card').forEach(card => {
+                const cardCategory = card.querySelector('.product-category').textContent.toLowerCase();
+                card.style.display = !category || cardCategory.includes(category) ? '' : 'none';
+            });
+        });
+
+        // Sort functionality
+        document.getElementById('sort').addEventListener('change', function(e) {
+            alert('Sorting by: ' + e.target.value);
+        });
+
+        // View toggle
+        document.querySelectorAll('.view-toggle button').forEach((button, index) => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.view-toggle button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                alert('Switched to ' + (index === 0 ? 'Grid' : 'List') + ' View');
+            });
+        });
+    </script>
+</body>
+</html>

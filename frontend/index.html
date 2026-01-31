@@ -1,0 +1,2336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nadeleine India</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header */
+        .header-top {
+            background: #fff;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #0066cc;
+            cursor: pointer;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header-actions button,
+        .header-actions a {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .header-actions button:hover,
+        .header-actions a:hover {
+            color: #0066cc;
+        }
+
+        .badge {
+            background: #ff6b35;
+            color: white;
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+        }
+
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 4px;
+            top: 100%;
+            right: 0;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-menu a,
+        .dropdown-menu button {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border: none;
+            background: none;
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
+        }
+
+        .dropdown-menu a:hover,
+        .dropdown-menu button:hover {
+            background-color: #f5f5f5;
+            color: #0066cc;
+        }
+
+        .logout-btn {
+            color: #ff6b35 !important;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            overflow: auto;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: #0066cc;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #0052a3;
+        }
+
+        .switch-link {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+        }
+
+        .switch-link a {
+            color: #0066cc;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            transition: right 0.3s;
+            overflow-y: auto;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-header {
+            background: #0066cc;
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items {
+            padding: 1.5rem;
+            min-height: 300px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-info h4 {
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-price {
+            color: #0066cc;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .remove-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .checkout-btn:hover {
+            background: #0052a3;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #999;
+            padding: 2rem;
+        }
+
+        /* Search */
+        .search-container {
+            max-width: 1400px;
+            margin: 1rem auto;
+            padding: 0 2rem;
+            display: none;
+        }
+
+        .search-container.active {
+            display: block;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .search-bar button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .search-bar button:hover {
+            background: #0052a3;
+        }
+
+        .search-results {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 0.8rem;
+            background: #f5f5f5;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-result-item:hover {
+            background: #e0e0e0;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: #f5f5f5;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-container a {
+            padding: 1rem 0;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-container a:hover {
+            color: #0066cc;
+            border-bottom-color: #0066cc;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Features Bar */
+        .features-bar {
+            background: #fff;
+            padding: 3rem 2rem;
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .feature {
+            padding: 1.5rem;
+        }
+
+        .feature h3 {
+            color: #0066cc;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .feature p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Products Section */
+        .section {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #0066cc;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .product-image {
+            background: #f5f5f5;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .wishlist-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            border: 2px solid #ff6b35;
+            color: #ff6b35;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .wishlist-icon.active {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .product-specs {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: #0066cc;
+            font-size: 1.1rem;
+        }
+
+        .shipping-badge {
+            font-size: 0.75rem;
+            color: #ff6b35;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .quick-add-btn {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .quick-add-btn:hover {
+            background: #0052a3;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.3rem;
+            width: fit-content;
+        }
+
+        .qty-btn {
+            background: #f5f5f5;
+            border: none;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .qty-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .qty-input {
+            width: 40px;
+            border: none;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .qty-input::-webkit-outer-spin-button,
+        .qty-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Checkout Page */
+        .checkout-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .checkout-page.active {
+            display: block;
+        }
+
+        .checkout-container {
+            background: white;
+            max-width: 1000px;
+            margin: 2rem auto;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .checkout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 1rem;
+        }
+
+        .checkout-header h1 {
+            color: #0066cc;
+            font-size: 1.8rem;
+        }
+
+        .checkout-header button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2rem;
+        }
+
+        .checkout-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-section h2 {
+            color: #0066cc;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .checkout-summary {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .summary-header {
+            color: #0066cc;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 0.5rem;
+        }
+
+        .summary-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .summary-item-name {
+            flex: 1;
+        }
+
+        .summary-item-price {
+            color: #0066cc;
+            font-weight: 600;
+        }
+
+        .summary-divider {
+            border-top: 2px solid #ddd;
+            margin: 1rem 0;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkout-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+        }
+
+        .place-order-btn {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .place-order-btn:hover {
+            background: #0052a3;
+        }
+
+        .cancel-checkout-btn {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .cancel-checkout-btn:hover {
+            background: #e0e0e0;
+        }
+
+        /* Payment Page */
+        .payment-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .payment-page.active {
+            display: block;
+        }
+
+        .payment-container {
+            background: white;
+            max-width: 600px;
+            margin: 2rem auto;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 1rem;
+        }
+
+        .payment-header h1 {
+            color: #0066cc;
+            font-size: 1.6rem;
+        }
+
+        .payment-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-tab {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            background: #f9f9f9;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .payment-tab.active {
+            border-color: #0066cc;
+            background: #e6f0ff;
+            color: #0066cc;
+        }
+
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .payment-summary {
+            background: #f0f8ff;
+            padding: 1rem;
+            border-radius: 4px;
+            border-left: 4px solid #0066cc;
+            margin-bottom: 1rem;
+        }
+
+        .payment-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .payment-summary-row:last-child {
+            margin-bottom: 0;
+            border-top: 1px solid #ddd;
+            padding-top: 0.5rem;
+            font-weight: bold;
+            color: #0066cc;
+            font-size: 1rem;
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+
+        .pay-button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .pay-button:hover {
+            background: #0052a3;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        /* About Section */
+        .about-section {
+            background: #f9f9f9;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+
+        .about-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            color: #0066cc;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            height: 300px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            background: white;
+            padding: 3rem 2rem;
+        }
+
+        .testimonials-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial {
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid #0066cc;
+        }
+
+        .stars {
+            color: #ffc107;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            color: #666;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: white;
+            padding: 3rem 2rem;
+        }
+
+        .faq-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            margin-bottom: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #0066cc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: all 0.3s;
+            border: none;
+            width: 100%;
+        }
+
+        .faq-question:hover {
+            background: #efefef;
+        }
+
+        .faq-answer {
+            padding: 1.5rem;
+            color: #666;
+            display: none;
+            background: white;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+
+        .toggle-icon.active {
+            transform: rotate(180deg);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: #0066cc;
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        .contact-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item h3 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-item a {
+            color: #ffeb3b;
+            text-decoration: none;
+        }
+
+        .contact-item a:hover {
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #ffeb3b;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .social-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            color: #ffeb3b;
+        }
+
+        .view-all-btn {
+            display: inline-block;
+            background: #0066cc;
+            color: white;
+            padding: 0.8rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 2rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .view-all-btn:hover {
+            background: #0052a3;
+        }
+
+        @media (max-width: 768px) {
+            .about-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .header-actions {
+                gap: 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header-top">
+        <div class="header-content">
+            <div class="logo" onclick="window.location.href='index.html'">Nadeleine</div>
+            <div class="header-actions">
+                <button onclick="toggleSearch()">🔍 Search</button>
+                <div class="user-menu">
+                    <button onclick="toggleUserMenu()">👤 Account</button>
+                    <div class="dropdown-menu" id="userMenu">
+                        <span id="userDisplay" style="padding: 12px 16px; display: block; color: #999;"></span>
+                        <a href="#" onclick="goToLogin(event)">Login</a>
+                        <a href="#" onclick="goToRegister(event)">Register</a>
+                        <button class="logout-btn" onclick="logout()" id="logoutBtn"
+                            style="display:none;">Logout</button>
+                    </div>
+                </div>
+                <button onclick="toggleWishlist()">❤️ Wishlist<span class="badge" id="wishlistCount"
+                        style="display:none;">0</span></button>
+                <button onclick="toggleCart()">🛒 Cart<span class="badge" id="cartCount"
+                        style="display:none;">0</span></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact Us</a>
+            <a href="#blog">Blog</a>
+        </div>
+    </nav>
+
+    <!-- Search Container -->
+    <div class="search-container" id="searchContainer">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search products..." onkeyup="liveSearch()">
+            <button onclick="performSearch()">Search</button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login</h2>
+                <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password">
+            </div>
+            <button class="submit-btn" onclick="handleLogin()">Login</button>
+            <div class="switch-link">
+                Don't have an account? <a onclick="switchToRegister(event)">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Register</h2>
+                <button class="close-btn" onclick="closeRegisterModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="registerName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="registerEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="registerPassword" placeholder="Enter your password">
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" id="registerPhone" placeholder="Enter your phone number">
+            </div>
+            <button class="submit-btn" onclick="handleRegister()">Register</button>
+            <div class="switch-link">
+                Already have an account? <a onclick="switchToLogin(event)">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="sidebar-header">
+            <h3>Shopping Cart</h3>
+            <button class="close-btn" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="empty-message">Your cart is empty</div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">₹0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Wishlist Sidebar -->
+    <div class="cart-sidebar" id="wishlistSidebar">
+        <div class="sidebar-header">
+            <h3>My Wishlist</h3>
+            <button class="close-btn" onclick="toggleWishlist()">&times;</button>
+        </div>
+        <div class="cart-items" id="wishlistItems">
+            <div class="empty-message">Your wishlist is empty</div>
+        </div>
+    </div>
+
+    <!-- Checkout Page -->
+    <div class="checkout-page" id="checkoutPage">
+        <div class="checkout-container">
+            <div class="checkout-header">
+                <h1>Checkout</h1>
+                <button onclick="closeCheckout()">&times;</button>
+            </div>
+            <div class="checkout-content">
+                <div class="checkout-form">
+                    <!-- Delivery Address -->
+                    <div class="form-section">
+                        <h2>Delivery Address</h2>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="emailAddr" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="phoneNum" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Street Address</label>
+                            <input type="text" id="street" placeholder="Enter street address" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" id="city" placeholder="City" required>
+                            </div>
+                            <div class="form-group">
+                                <label>State</label>
+                                <input type="text" id="state" placeholder="State" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Postal Code</label>
+                                <input type="text" id="postalCode" placeholder="Postal Code" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Country</label>
+                                <input type="text" id="country" placeholder="Country" value="India" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Method -->
+                    <div class="form-section">
+                        <h2>Shipping Method</h2>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="shipping" value="standard" checked> Standard Shipping - Free
+                                (5-7 days)
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="shipping" value="express"> Express Shipping - ₹99 (2-3 days)
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="shipping" value="overnight"> Overnight Shipping - ₹299 (1 day)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="checkout-buttons">
+                        <button class="place-order-btn" onclick="proceedToPayment()">Proceed to Payment</button>
+                        <button class="cancel-checkout-btn" onclick="closeCheckout()">Cancel Order</button>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="checkout-summary">
+                    <div class="summary-header">Order Summary</div>
+                    <div class="summary-items" id="checkoutItems"></div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-total">
+                        <span>Subtotal:</span>
+                        <span id="subtotalCheckout">₹0.00</span>
+                    </div>
+                    <div class="summary-total"
+                        style="border-bottom: 1px solid #ddd; padding-bottom: 1rem; margin-bottom: 1rem; font-size: 0.9rem; color: #666;">
+                        <span>Shipping:</span>
+                        <span id="shippingCost">Free</span>
+                    </div>
+                    <div class="summary-total" style="color: #ff6b35; font-size: 1.2rem;">
+                        <span>Total:</span>
+                        <span id="totalCheckout">₹0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Page -->
+    <div class="payment-page" id="paymentPage">
+        <div class="payment-container">
+            <div class="payment-header">
+                <h1>Payment Details</h1>
+                <button onclick="closePayment()">&times;</button>
+            </div>
+
+            <div class="payment-summary" id="paymentSummary">
+                <div class="payment-summary-row">
+                    <span>Order Total:</span>
+                    <span id="paymentTotal">₹0.00</span>
+                </div>
+            </div>
+
+            <div class="payment-tabs">
+                <div class="payment-tab active" onclick="switchPaymentTab('card')">💳 Card</div>
+                <div class="payment-tab" onclick="switchPaymentTab('upi')">📱 UPI</div>
+                <div class="payment-tab" onclick="switchPaymentTab('netbanking')">🏦 Net Banking</div>
+            </div>
+
+            <!-- Card Payment -->
+            <div id="cardPayment" class="payment-form" style="display: block;">
+                <div class="form-group">
+                    <label>Cardholder Name</label>
+                    <input type="text" id="cardName" placeholder="Name on card" required>
+                </div>
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                </div>
+                <div class="card-row">
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="text" id="cvv" placeholder="123" maxlength="4" required>
+                    </div>
+                </div>
+                <button class="pay-button" onclick="processPayment('card')">Pay Now</button>
+            </div>
+
+            <!-- UPI Payment -->
+            <div id="upiPayment" class="payment-form" style="display: none;">
+                <div class="form-group">
+                    <label>UPI ID</label>
+                    <input type="text" id="upiId" placeholder="yourname@bank" required>
+                </div>
+                <button class="pay-button" onclick="processPayment('upi')">Pay with UPI</button>
+            </div>
+
+            <!-- Net Banking -->
+            <div id="netbankingPayment" class="payment-form" style="display: none;">
+                <div class="form-group">
+                    <label>Select Bank</label>
+                    <select id="bankSelect" required>
+                        <option value="">Choose your bank</option>
+                        <option value="sbi">State Bank of India (SBI)</option>
+                        <option value="hdfc">HDFC Bank</option>
+                        <option value="icici">ICICI Bank</option>
+                        <option value="axis">Axis Bank</option>
+                        <option value="boi">Bank of India</option>
+                        <option value="bob">Bank of Baroda</option>
+                    </select>
+                </div>
+                <button class="pay-button" onclick="processPayment('netbanking')">Proceed to Bank</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Your Health, Our Priority</h1>
+        <p>Premium Quality Medicines & Health Supplements for Better Living</p>
+    </section>
+
+    <!-- Features Bar -->
+    <section class="features-bar">
+        <div class="features-container">
+            <div class="feature">
+                <h3>⭐ Quality Ingredients</h3>
+                <p>100% authentic pharmaceutical products with quality assurance</p>
+            </div>
+            <div class="feature">
+                <h3>✓ GMP Certified</h3>
+                <p>All products manufactured under Good Manufacturing Practice standards</p>
+            </div>
+            <div class="feature">
+                <h3>🌍 WHO Certified</h3>
+                <p>World Health Organization certified production facilities</p>
+            </div>
+            <div class="feature">
+                <h3>🚚 Free Shipping</h3>
+                <p>Fast and free delivery on all orders across India</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Health Supplements Section -->
+    <section class="section">
+        <h2 class="section-title">Health Supplements</h2>
+        <div class="products-grid" id="productsGrid"></div>
+        <div style="text-align: center;">
+            <a href="shop.html" class="view-all-btn">View All Products</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="about-container">
+            <div class="about-text">
+                <h2>About Us</h2>
+                <p>With a presence across multiple states in India, Nadeleine Pharmaceuticals combines modern research
+                    with proven pharmaceutical practices to deliver high-quality medicines and health solutions.</p>
+                <p>At Nadeleine Pharmaceuticals, we recognize the unique health needs of individuals and aim to be a
+                    trusted partner in promoting wellness at every stage of life.</p>
+                <p>Our commitment to quality, innovation, and customer satisfaction makes us a leader in the
+                    pharmaceutical industry.</p>
+            </div>
+            <div class="about-image">📋</div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section">
+        <div class="testimonials-container">
+            <h2 class="section-title">Testimonials</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-text">"Excellent quality products and very fast delivery. Highly
+                        recommended!"</div>
+                    <div class="testimonial-author">- Rajesh Kumar</div>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-text">"Best pharmaceutical company. Great customer service and authentic
+                        products."</div>
+                    <div class="testimonial-author">- Priya Sharma</div>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-text">"Using their products for 2 years. Always reliable and effective."
+                    </div>
+                    <div class="testimonial-author">- Dr. Amit Patel</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What is Nadeleine Pharmaceuticals?</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Nadeleine Pharmaceuticals is a leading pharmaceutical company in India that provides high-quality
+                        medicines and health supplements. We are committed to delivering authentic, GMP-certified, and
+                        WHO-certified products.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Where is Nadeleine Pharmaceuticals located?</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Our headquarters is at A-99, Second Floor, DDA Shed, Okhla Industrial Area, Phase-2, New Delhi,
+                        Delhi, India - 110020.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What types of products does Nadeleine offer?</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>We offer health supplements, vitamins, medicines for common ailments, and specialized
+                        formulations for bone health, immunity, and overall wellness.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>How do you ensure product quality?</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>All our products are manufactured under GMP standards and are WHO-certified. We use only quality
+                        ingredients and conduct rigorous quality checks.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Do you offer free shipping?</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! We offer free shipping on all orders across India. Your products will be delivered safely
+                        and quickly to your doorstep.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What is your customer service contact?</span>
+                    <span class="toggle-icon">▼</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Contact us at +91 92120935555 or email info@Nadeleinepharma.com. We're available Monday to
+                        Saturday from 10:30 AM to 6:30 PM.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-section" id="contact">
+        <div class="contact-container">
+            <h2 class="section-title" style="color: white;">Get in Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <h3>📞 Phone</h3>
+                    <a href="tel:+919212093555">+91 92120935555</a><br>
+                    <a href="tel:+911141688699">+91 011-41688699</a>
+                </div>
+                <div class="contact-item">
+                    <h3>📧 Email</h3>
+                    <a href="mailto:info@Nadeleinepharma.com">info@Nadeleinepharma.com</a>
+                </div>
+                <div class="contact-item">
+                    <h3>📍 Address</h3>
+                    <p>A-99, DDA Shed, Okhla Industrial Area<br>New Delhi - 110020</p>
+                </div>
+                <div class="contact-item">
+                    <h3>⏰ Hours</h3>
+                    <p>Monday - Saturday<br>10:30 AM - 6:30 PM IST</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="https://facebook.com">f</a>
+            <a href="https://twitter.com">𝕏</a>
+            <a href="https://instagram.com">📷</a>
+            <a href="https://linkedin.com">in</a>
+            <a href="https://wa.me/919212093555">💬</a>
+        </div>
+        <div class="footer-links">
+            <a href="#about">About Us</a>
+            <a href="shop.html">Shop</a>
+            <a href="#contact">Contact Us</a>
+            <a href="#blog">Blog</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#shipping">Shipping Policy</a>
+            <a href="#returns">Returns & Cancellation</a>
+        </div>
+        <p>&copy; Nadeleine Pharmaceuticals. All Rights Reserved.</p>
+        <p style="font-size: 0.85rem; color: #999; margin-top: 1rem;">Developed with care for your health</p>
+    </footer>
+
+    <script>
+        // Product Database
+        const allProducts = [
+            { id: 'astesol-d3mg', name: 'Astesol D3®MG – The Absolute Magnesium Solution', price: 279.04, emoji: '💊', specs: '60 capsules | 9 months' },
+            { id: 'onvit-lc', name: 'ONVIT LC – Advanced Mitochondrial Energizer', price: 589.52, emoji: '💉', specs: '30 capsules | 9 months' },
+            { id: 'astiumd3-uc', name: 'AstiumD3-UC – Ultimate Bone & Joint Care', price: 647.61, emoji: '🩹', specs: '30 tablets | 9 months' },
+            { id: 'riglobin-xt', name: 'Riglobin-XT – Iron, Folic Acid & Vitamin B12', price: 249.00, emoji: '🌿', specs: '30 tablets | 9 months' },
+            { id: 'astium-d3', name: 'Astium-D3 – Coral Calcium with Vitamin D₃', price: 329.00, emoji: '🦴', specs: '30 tablets | 9 months' },
+            { id: 'onvit-4g', name: 'Onvit-4G Softgel – Energy & Immunity Formula', price: 499.00, emoji: '🧬', specs: '30 softgels | 9 months' },
+            { id: 'coldnic-syrup', name: 'Coldnic Syrup – Cold & Cough Relief (60ml)', price: 149.99, emoji: '🧴', specs: '60ml bottle | 9 months' },
+            { id: 'claventin-625', name: 'Claventin 625 – Antibiotic with Probiotic', price: 399.00, emoji: '💪', specs: '10 tablets | 9 months' }
+        ];
+
+        // State Management
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            renderProducts();
+            updateCartUI();
+            updateWishlistUI();
+            updateUserUI();
+        });
+
+        // Render Products
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = allProducts.map(product => `
+                <div class="product-card" onclick="goToProduct('${product.id}')">
+                    <div class="product-image">
+                        ${product.emoji}
+                        <div class="wishlist-icon ${wishlist.includes(product.id) ? 'active' : ''}" 
+                             onclick="event.stopPropagation(); toggleWishlistProduct('${product.id}')">❤️</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-specs">${product.specs}</div>
+                        <div class="product-footer">
+                            <div class="product-price">₹${product.price.toFixed(2)}</div>
+                            <div class="quantity-selector" onclick="event.stopPropagation()">
+                                <button class="qty-btn" onclick="changeProductQty('${product.id}', -1)">−</button>
+                                <input type="number" class="qty-input" id="qty-${product.id}" value="1" min="1" readonly>
+                                <button class="qty-btn" onclick="changeProductQty('${product.id}', 1)">+</button>
+                                <button class="quick-add-btn" onclick="addToCartWithQty('${product.id}')" style="margin-left: 0.5rem;">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cart Functions
+        function changeProductQty(productId, change) {
+            const input = document.getElementById(`qty-${productId}`);
+            let currentQty = parseInt(input.value);
+            currentQty = Math.max(1, currentQty + change);
+            input.value = currentQty;
+        }
+
+        function addToCartWithQty(productId) {
+            const input = document.getElementById(`qty-${productId}`);
+            const quantity = parseInt(input.value) || 1;
+            const product = allProducts.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({ ...product, quantity });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+            input.value = 1;
+        }
+
+        function addToCart(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function updateCartQty(productId, change) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity = Math.max(1, item.quantity + change);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const countBadge = document.getElementById('cartCount');
+            countBadge.textContent = count;
+            countBadge.style.display = count > 0 ? 'block' : 'none';
+
+            const cartItems = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-message">Your cart is empty</div>';
+                document.getElementById('cartTotal').textContent = '₹0.00';
+            } else {
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-image">${item.emoji}</div>
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <div class="cart-item-price">₹${item.price.toFixed(2)}</div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                                <div class="quantity-selector" style="margin-bottom: 0;">
+                                    <button class="qty-btn" onclick="updateCartQty('${item.id}', -1)">−</button>
+                                    <input type="number" class="qty-input" value="${item.quantity}" readonly>
+                                    <button class="qty-btn" onclick="updateCartQty('${item.id}', 1)">+</button>
+                                </div>
+                                <button class="remove-btn" onclick="removeFromCart('${item.id}')">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('cartTotal').textContent = '₹' + total.toFixed(2);
+            }
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+        }
+
+        function checkout() {
+            if (!currentUser) {
+                alert('Please login first');
+                toggleCart();
+                goToLogin();
+                return;
+            }
+            if (cart.length === 0) {
+                alert('Your cart is empty');
+                return;
+            }
+            toggleCart();
+            openCheckout();
+        }
+
+        function openCheckout() {
+            // Pre-fill user information if logged in
+            if (currentUser) {
+                document.getElementById('fullName').value = currentUser.name;
+                document.getElementById('emailAddr').value = currentUser.email;
+            }
+
+            // Update order summary
+            updateCheckoutSummary();
+            document.getElementById('checkoutPage').classList.add('active');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutPage').classList.remove('active');
+        }
+
+        function updateCheckoutSummary() {
+            const checkoutItems = document.getElementById('checkoutItems');
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            checkoutItems.innerHTML = cart.map(item => `
+                <div class="summary-item">
+                    <span class="summary-item-name">${item.name} x${item.quantity}</span>
+                    <span class="summary-item-price">₹${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+            `).join('');
+
+            // Calculate shipping
+            const shippingRadios = document.querySelectorAll('input[name="shipping"]');
+            let shippingCost = 0;
+            let shippingLabel = 'Free';
+            shippingRadios.forEach(radio => {
+                if (radio.checked) {
+                    if (radio.value === 'express') {
+                        shippingCost = 99;
+                        shippingLabel = '₹99';
+                    } else if (radio.value === 'overnight') {
+                        shippingCost = 299;
+                        shippingLabel = '₹299';
+                    }
+                }
+            });
+
+            document.getElementById('subtotalCheckout').textContent = '₹' + subtotal.toFixed(2);
+            document.getElementById('shippingCost').textContent = shippingLabel;
+            const total = subtotal + shippingCost;
+            document.getElementById('totalCheckout').textContent = '₹' + total.toFixed(2);
+        }
+
+        function proceedToPayment() {
+            // Validate delivery address
+            const fullName = document.getElementById('fullName').value.trim();
+            const emailAddr = document.getElementById('emailAddr').value.trim();
+            const phoneNum = document.getElementById('phoneNum').value.trim();
+            const street = document.getElementById('street').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const postalCode = document.getElementById('postalCode').value.trim();
+
+            if (!fullName || !emailAddr || !phoneNum || !street || !city || !state || !postalCode) {
+                alert('Please fill in all delivery address fields');
+                return;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailAddr)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Validate phone
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(phoneNum.replace(/\D/g, ''))) {
+                alert('Please enter a valid 10-digit phone number');
+                return;
+            }
+
+            // Store delivery details
+            localStorage.setItem('deliveryDetails', JSON.stringify({
+                fullName, emailAddr, phoneNum, street, city, state, postalCode,
+                country: document.getElementById('country').value,
+                shipping: document.querySelector('input[name="shipping"]:checked').value
+            }));
+
+            closeCheckout();
+            openPayment();
+        }
+
+        function openPayment() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            let shippingCost = 0;
+
+            const shippingRadios = document.querySelectorAll('input[name="shipping"]');
+            shippingRadios.forEach(radio => {
+                if (radio.checked) {
+                    if (radio.value === 'express') shippingCost = 99;
+                    else if (radio.value === 'overnight') shippingCost = 299;
+                }
+            });
+
+            const total = subtotal + shippingCost;
+            document.getElementById('paymentTotal').textContent = '₹' + total.toFixed(2);
+            document.getElementById('paymentPage').classList.add('active');
+        }
+
+        function closePayment() {
+            document.getElementById('paymentPage').classList.remove('active');
+        }
+
+        function switchPaymentTab(tab) {
+            // Hide all payment forms
+            document.getElementById('cardPayment').style.display = 'none';
+            document.getElementById('upiPayment').style.display = 'none';
+            document.getElementById('netbankingPayment').style.display = 'none';
+
+            // Update tab styles
+            document.querySelectorAll('.payment-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Show selected form
+            if (tab === 'card') {
+                document.getElementById('cardPayment').style.display = 'flex';
+            } else if (tab === 'upi') {
+                document.getElementById('upiPayment').style.display = 'flex';
+            } else if (tab === 'netbanking') {
+                document.getElementById('netbankingPayment').style.display = 'flex';
+            }
+        }
+
+        function processPayment(method) {
+            let isValid = false;
+
+            if (method === 'card') {
+                const cardName = document.getElementById('cardName').value.trim();
+                const cardNumber = document.getElementById('cardNumber').value.trim().replace(/\s/g, '');
+                const expiryDate = document.getElementById('expiryDate').value.trim();
+                const cvv = document.getElementById('cvv').value.trim();
+
+                // Validate card details
+                if (!cardName) {
+                    alert('Please enter cardholder name');
+                    return;
+                }
+                if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
+                    alert('Please enter a valid 16-digit card number');
+                    return;
+                }
+                if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                    alert('Please enter expiry date in MM/YY format');
+                    return;
+                }
+                if (cvv.length < 3 || cvv.length > 4 || !/^\d+$/.test(cvv)) {
+                    alert('Please enter a valid CVV');
+                    return;
+                }
+                isValid = true;
+            } else if (method === 'upi') {
+                const upiId = document.getElementById('upiId').value.trim();
+                if (!upiId || !upiId.includes('@')) {
+                    alert('Please enter a valid UPI ID (format: username@bank)');
+                    return;
+                }
+                isValid = true;
+            } else if (method === 'netbanking') {
+                const bankSelect = document.getElementById('bankSelect').value;
+                if (!bankSelect) {
+                    alert('Please select a bank');
+                    return;
+                }
+                isValid = true;
+            }
+
+            if (isValid) {
+                completeOrder(method);
+            }
+        }
+
+        function completeOrder(method) {
+            // Store order details
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            let shippingCost = 0;
+
+            const shippingRadios = document.querySelectorAll('input[name="shipping"]');
+            shippingRadios.forEach(radio => {
+                if (radio.checked) {
+                    if (radio.value === 'express') shippingCost = 99;
+                    else if (radio.value === 'overnight') shippingCost = 299;
+                }
+            });
+
+            const orderNumber = 'ORD-' + Date.now();
+            const order = {
+                orderNumber,
+                items: cart,
+                subtotal,
+                shipping: shippingCost,
+                total: subtotal + shippingCost,
+                paymentMethod: method,
+                date: new Date().toLocaleString(),
+                deliveryDetails: JSON.parse(localStorage.getItem('deliveryDetails'))
+            };
+
+            // Save order to localStorage
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Clear cart
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+
+            // Show success message and close payment
+            closePayment();
+            alert(`✓ Payment Successful!\n\nOrder Number: ${orderNumber}\nTotal Amount: ₹${order.total.toFixed(2)}\n\nThank you for your purchase!\nYour order will be delivered to the address provided.`);
+        }
+
+        // Wishlist Functions
+        function toggleWishlistProduct(productId) {
+            if (wishlist.includes(productId)) {
+                wishlist = wishlist.filter(id => id !== productId);
+            } else {
+                wishlist.push(productId);
+            }
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            updateWishlistUI();
+            renderProducts();
+        }
+
+        function updateWishlistUI() {
+            const countBadge = document.getElementById('wishlistCount');
+            countBadge.textContent = wishlist.length;
+            countBadge.style.display = wishlist.length > 0 ? 'block' : 'none';
+
+            const wishlistItems = document.getElementById('wishlistItems');
+            if (wishlist.length === 0) {
+                wishlistItems.innerHTML = '<div class="empty-message">Your wishlist is empty</div>';
+            } else {
+                const wishlistProducts = allProducts.filter(p => wishlist.includes(p.id));
+                wishlistItems.innerHTML = wishlistProducts.map(product => `
+                    <div class="cart-item">
+                        <div class="cart-item-image">${product.emoji}</div>
+                        <div class="cart-item-info">
+                            <h4>${product.name}</h4>
+                            <div class="cart-item-price">₹${product.price.toFixed(2)}</div>
+                            <button class="quick-add-btn" onclick="addToCart('${product.id}')">Add to Cart</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleWishlist() {
+            document.getElementById('wishlistSidebar').classList.toggle('active');
+        }
+
+        // User Functions
+        function goToLogin(e) {
+            if (e) e.preventDefault();
+            closeRegisterModal();
+            document.getElementById('loginModal').classList.add('active');
+            toggleUserMenu();
+        }
+
+        function goToRegister(e) {
+            if (e) e.preventDefault();
+            closeLoginModal();
+            document.getElementById('registerModal').classList.add('active');
+            toggleUserMenu();
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            currentUser = { email, name: email.split('@')[0] };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateUserUI();
+            closeLoginModal();
+            alert('Logged in successfully!');
+        }
+
+        function handleRegister() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const phone = document.getElementById('registerPhone').value;
+
+            if (!name || !email || !password || !phone) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            currentUser = { name, email, phone };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateUserUI();
+            closeRegisterModal();
+            alert('Registered successfully!');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateUserUI();
+            toggleUserMenu();
+            alert('Logged out successfully');
+        }
+
+        function updateUserUI() {
+            const userDisplay = document.getElementById('userDisplay');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (currentUser) {
+                userDisplay.innerHTML = `<strong>${currentUser.name}</strong>`;
+                logoutBtn.style.display = 'block';
+            } else {
+                userDisplay.innerHTML = '';
+                logoutBtn.style.display = 'none';
+            }
+        }
+
+        function toggleUserMenu() {
+            document.getElementById('userMenu').classList.toggle('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.remove('active');
+            document.getElementById('registerName').value = '';
+            document.getElementById('registerEmail').value = '';
+            document.getElementById('registerPassword').value = '';
+            document.getElementById('registerPhone').value = '';
+        }
+
+        function switchToLogin(e) {
+            e.preventDefault();
+            closeRegisterModal();
+            goToLogin();
+        }
+
+        function switchToRegister(e) {
+            e.preventDefault();
+            closeLoginModal();
+            goToRegister();
+        }
+
+        // Search Functions
+        function toggleSearch() {
+            const container = document.getElementById('searchContainer');
+            container.classList.toggle('active');
+        }
+
+        function liveSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const results = document.getElementById('searchResults');
+
+            if (query.length === 0) {
+                results.classList.remove('active');
+                return;
+            }
+
+            const filtered = allProducts.filter(p =>
+                p.name.toLowerCase().includes(query) ||
+                p.specs.toLowerCase().includes(query)
+            );
+
+            if (filtered.length === 0) {
+                results.innerHTML = '<p style="color: #999; padding: 0.8rem;">No products found</p>';
+            } else {
+                results.innerHTML = filtered.map(p => `
+                    <div class="search-result-item" onclick="goToProduct('${p.id}'); toggleSearch();">
+                        <strong>${p.name}</strong><br>
+                        <span style="color: #0066cc; font-weight: bold;">₹${p.price.toFixed(2)}</span>
+                    </div>
+                `).join('');
+            }
+            results.classList.add('active');
+        }
+
+        function performSearch() {
+            liveSearch();
+        }
+
+        function goToProduct(productId) {
+            window.location.href = `product.html?id=${productId}`;
+        }
+
+        // FAQ Toggle
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.toggle-icon');
+
+            document.querySelectorAll('.faq-answer').forEach(item => {
+                if (item !== answer) {
+                    item.classList.remove('active');
+                    item.previousElementSibling.querySelector('.toggle-icon').classList.remove('active');
+                }
+            });
+
+            answer.classList.toggle('active');
+            icon.classList.toggle('active');
+        }
+
+        // Event listeners for checkout page
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add event listeners for shipping method changes
+            const shippingRadios = document.querySelectorAll('input[name="shipping"]');
+            shippingRadios.forEach(radio => {
+                radio.addEventListener('change', updateCheckoutSummary);
+            });
+
+            // Format card number input
+            document.getElementById('cardNumber').addEventListener('input', function (e) {
+                let value = e.target.value.replace(/\s/g, '');
+                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                e.target.value = formattedValue;
+            });
+
+            // Format expiry date input
+            document.getElementById('expiryDate').addEventListener('input', function (e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                e.target.value = value;
+            });
+
+            // Allow only numbers in CVV
+            document.getElementById('cvv').addEventListener('input', function (e) {
+                e.target.value = e.target.value.replace(/\D/g, '');
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const userMenu = document.getElementById('userMenu');
+            if (!e.target.closest('.user-menu')) {
+                userMenu.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
